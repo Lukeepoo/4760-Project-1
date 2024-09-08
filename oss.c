@@ -13,7 +13,7 @@ int main(int argc, char* argv[]) {
     while ((opt = getopt(argc, argv, "hn:s:t:")) != -1) {
         switch (opt) {
         case 'h':
-            printf("Usage: ./oss [-h] [-n proc] [-s simul] [-t iter]\n");
+            printf("Usage: ./oss [-h help] [-n number of processes] [-s number of processes launched simultaneously] [-t number of iterations of each process]\n");
             exit(0);
         case 'n':
             num_processes = atoi(optarg);
@@ -25,7 +25,7 @@ int main(int argc, char* argv[]) {
             iterations = atoi(optarg);
             break;
         default:
-            fprintf(stderr, "Usage: ./oss [-h] [-n proc] [-s simul] [-t iter]\n");
+            fprintf(stderr, "Usage: ./oss [-h help] [-n number of processes] [-s number of processes launched simultaneously] [-t number of iterations of each process]\n");
             exit(EXIT_FAILURE);
         }
     }
