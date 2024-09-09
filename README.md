@@ -33,8 +33,11 @@ The `oss` program is executed with the following command-line options:
 `./oss [-h help] [-n number of processes] [-s number of processes launched simultaneously] [-t number of iterations of each process]`
 
 `-h`: Displays the above message and exits.
+
 `-n`: Specifies the number of `user` processes to launch. Will default to 5 if not given.
+
 `-s`: Specifies the maximum number of `user` processes that can be run simulatneously. Will default to 3 if not given.
+
 `-t`: Specifies the number of iteration of each `user` process will perform. Will default to 10 if not given.
 
 ### Example Commands
@@ -52,5 +55,7 @@ Max simultaneous processes: 3
 Iterations per process: 7
 
 USER PID:6577 PPID:6576 Iteration:1 before sleeping
+
 USER PID:6577 PPID:6576 Iteration:1 after sleeping
+
 ...
