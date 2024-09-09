@@ -20,3 +20,7 @@ To compile the program, navigate to the project directory and run:
 
 ```bash
 make
+
+This will generate the following executables
+- **`oss`**: The main program that creates and controls the `user` processes.
+- **`user`**: The program executed by each child process
