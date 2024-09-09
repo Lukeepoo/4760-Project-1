@@ -1,4 +1,6 @@
 # CMP SCI 4760 Operating Systems - Project 1
+# Written by: Lucas Lovellette
+# Written on: 09/07/2024
 
 ## Overview
 

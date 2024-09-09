@@ -1,3 +1,6 @@
+#Written by: Lucas Lovellette
+#Written on: 09/07/2024
+
 # Compiler to use
 CC = gcc
 

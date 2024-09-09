@@ -1,3 +1,6 @@
+//Written by: Lucas Lovellette
+//Written on: 09/08/2024
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
