@@ -1,75 +1,89 @@
-//Written by: Lucas Lovellette
-//Written on: 09/08/2024
+/*
+ * oss.c
+ * CMP SCI 4760 Operating Systems - Project #1
+ *
+ * Author: Lucas lovellette
+ * Date:   02/08/2025
+ *
+ * Description:
+ *   The oss process parses command line options and launches a specified number of user
+ *   processes (child processes) while ensuring that no more than a given number of them run
+ *   simultaneously. It uses fork() to create child processes and execl() to run the user process.
+ *
+ * Usage:
+ *   ./oss [-h] [-n proc] [-s simul] [-t iter]
+ *   -h         : display help message and exit.
+ *   -n proc    : total number of user processes to launch (default 5).
+ *   -s simul   : maximum number of simultaneous user processes (default 3).
+ *   -t iter    : number of iterations to pass to each user process (default 7).
+ */
 
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
-#include <sys/types.h>
 #include <sys/wait.h>
 
-int main(int argc, char* argv[]) {
-    int num_processes = 5;
-    int max_simultaneous = 3;
-    int iterations = 10;
+void print_usage() {
+    printf("Usage: ./oss [-h] [-n proc] [-s simul] [-t iter]\n");
+    printf(" -h       Show help message\n");
+    printf(" -n proc  Number of user processes to create\n");
+    printf(" -s simul Max simultaneous user processes\n");
+    printf(" -t iter  Number of iterations for each user process\n");
+}
 
-    int opt;
+int main(int argc, char *argv[]) {
+    int opt, proc = 5, simul = 3, iter = 7;  // Default values
+    int running = 0, i = 0;
+
     while ((opt = getopt(argc, argv, "hn:s:t:")) != -1) {
         switch (opt) {
-        case 'h':
-            printf("Usage: ./oss [-h help] [-n number of processes] [-s number of processes launched simultaneously] [-t number of iterations of each process]\n");
-            exit(0);
-        case 'n':
-            num_processes = atoi(optarg);
+            case 'h':
+                print_usage();
+            return 0;
+            case 'n':
+                proc = atoi(optarg);
             break;
-        case 's':
-            max_simultaneous = atoi(optarg);
+            case 's':
+                simul = atoi(optarg);
             break;
-        case 't':
-            iterations = atoi(optarg);
+            case 't':
+                iter = atoi(optarg);
             break;
-        default:
-            fprintf(stderr, "Usage: ./oss [-h help] [-n number of processes] [-s number of processes launched simultaneously] [-t number of iterations of each process]\n");
-            exit(EXIT_FAILURE);
+            default:
+                print_usage();
+            return 1;
         }
     }
 
-    printf("Number of processes: %d\n", num_processes);
-    printf("Max simultaneous processes: %d\n", max_simultaneous);
-    printf("Iterations per process: %d\n", iterations);
+    printf("OSS: Launching %d user processes with max %d simultaneous, each doing %d iterations.\n", proc, simul, iter);
 
-    // Fork and Exec logic
-    int active_processes = 0;
-    for (int i = 0; i < num_processes; i++) {
-        if (active_processes >= max_simultaneous) {
-            wait(NULL); // Wait for any child to finish
-            active_processes--;
-        }
-
-        pid_t pid = fork();
-        if (pid == 0) {
-            // In the child process
-            char iter_str[10];
-            sprintf(iter_str, "%d", iterations);
-            execl("./user", "user", iter_str, (char*)NULL);
-            perror("execl failed"); // This will only run if execl fails
-            exit(1);
-        }
-        else if (pid > 0) {
-            // In the parent process
-            active_processes++;
-        }
-        else {
-            // Fork failed
-            perror("fork failed");
-            exit(1);
+    while (i < proc) {
+        if (running < simul) {
+            pid_t pid = fork();
+            if (pid < 0) {
+                perror("Fork failed");
+                exit(1);
+            }
+            if (pid == 0) {
+                char iter_str[10];
+                snprintf(iter_str, sizeof(iter_str), "%d", iter);
+                execl("./user", "user", iter_str, (char *)NULL);
+                perror("Exec failed");
+                exit(1);
+            }
+            running++;
+            i++;
+        } else {
+            wait(NULL);
+            running--;
         }
     }
 
-    // Wait for all remaining children to finish
-    while (active_processes > 0) {
+    while (running > 0) {
         wait(NULL);
-        active_processes--;
+        running--;
     }
 
+    printf("OSS: All user processes completed.\n");
     return 0;
 }

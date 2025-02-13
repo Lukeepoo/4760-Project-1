@@ -1,68 +1,57 @@
-# CMP SCI 4760 Operating Systems - Project 1
-# Written by: Lucas Lovellette
-# Written on: 09/07/2024
+Operating Systems Project #1
+-----------------------------
+Author: Lucas Lovellette
+Date: 02/08/2025
 
-## Overview
+Description:
+------------
+This project creates a simple multi-process system consisting of a parent process (oss) and a child process (user).
+The oss process parses command line options to determine:
+  - The total number of user processes to launch (-n)
+  - The maximum number of simultaneous processes (-s)
+  - The number of iterations for the user process (-t)
 
-This project implements a process management system in C using the `fork()` and `exec()` system calls. The program `oss` creates and manages multiple child processes (`user`), ensuring that no more than a specified number of processes run simultaneously. Each `user` process performs a specified number of iterations, printing its status before and after sleeping.
+Each user process, when executed, prints its PID, its parent's PID, and the iteration count before and after a one-second sleep.
 
-## Requirements
+Files:
+------
+- oss.c      : Source code for the parent process (oss)
+- user.c     : Source code for the child process (user)
+- Makefile   : Build script that compiles both executables and provides a clean target
+- README     : This file
 
-- A Unix-like environment with Bash and GCC installed.
-- `make` for compiling the program.
+Compilation:
+------------
+To compile the project, run:
+    make
+This will create the executables: oss and user.
 
-## Files
+Usage:
+------
+The parent process (oss) is invoked with the following options:
+    -h         : Show help message and exit
+    -n proc    : Total number of user processes to launch (default: 5)
+    -s simul   : Maximum number of simultaneous user processes (default: 3)
+    -t iter    : Number of iterations to pass to the user process (default: 7)
 
-- **`oss.c`**: The parent process that manages the creation and execution of `user` processes.
-- **`user.c`**: The child process that performs a task and reports its status.
+Example:
+    To launch oss to create 5 user processes, with no more than 3 running concurrently and 7 iterations each:
 
-## Compilation
+    ./oss -n 5 -s 3 -t 7
 
-To compile the program, navigate to the project directory and run:
+Note:
+-----
+The user executable is intended to be launched by oss. However, you can test it individually by running:
+    ./user 5
 
-```make```
+Version Control:
+----------------
+This project uses git for version control. Commit logs show daily progress and modifications.
 
-This will generate the following executables:
-- **`oss`**: The main program that creates and controls the `user` processes.
-- **`user`**: The program executed by each child process.
+Known Issues:
+-------------
+No major issues at this time.
 
-## Usage
-
-### Running the Program
-
-The `oss` program is executed with the following command-line options:
-
-`./oss [-h help] [-n number of processes] [-s number of processes launched simultaneously] [-t number of iterations of each process]`
-
-`-h`: Displays the above message and exits.
-
-`-n`: Specifies the number of `user` processes to launch. Will default to 5 if not given.
-
-`-s`: Specifies the maximum number of `user` processes that can be run simulatneously. Will default to 3 if not given.
-
-`-t`: Specifies the number of iteration of each `user` process will perform. Will default to 10 if not given.
-
-### Example Commands
-
-1. Launch 8 user processes, with up to 4 running simultaneously, each performing 7 iterations: `./oss -n 8 -s 4 -t 7`
-2. Launch 3 user processes, with up to 2 running simultaneously, each performing 6 iterations: `./oss -n 3 -s 2 -t 6`
-3. Display help message: `./oss -h`
-
-### Expected Output
-
-Number of processes: 5
-
-Max simultaneous processes: 3
-
-Iterations per process: 7
-
-USER PID:6577 PPID:6576 Iteration:1 before sleeping
-
-USER PID:6577 PPID:6576 Iteration:1 after sleeping
-
-...
-
-
-## GitHub link
-
-https://github.com/Lukeepoo/4760-Project-1
+Author Notes:
+-------------
+Before final submission, please run "make clean" to remove object files and executables.

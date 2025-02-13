@@ -1,29 +1,20 @@
-#Written by: Lucas Lovellette
-#Written on: 09/07/2024
+# Makefile for CMP SCI 4760 Operating Systems Project #1
+#
+# This Makefile compiles two executables: oss and user.
+# Use the "all" target to compile both.
+# Use "make clean" to remove compiled binaries and object files.
 
-# Compiler to use
 CC = gcc
-
-# Compiler flags
 CFLAGS = -Wall -g
-
-# Targets
 TARGETS = oss user
 
-# Rules
 all: $(TARGETS)
 
-oss: oss.o
-	$(CC) $(CFLAGS) -o oss oss.o
+oss: oss.c
+	$(CC) $(CFLAGS) -o oss oss.c
 
-user: user.o
-	$(CC) $(CFLAGS) -o user user.o
-
-oss.o: oss.c
-	$(CC) $(CFLAGS) -c oss.c
-
-user.o: user.c
-	$(CC) $(CFLAGS) -c user.c
+user: user.c
+	$(CC) $(CFLAGS) -o user user.c
 
 clean:
 	rm -f $(TARGETS) *.o
