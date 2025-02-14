@@ -46,12 +46,9 @@ The user executable is intended to be launched by oss. However, you can test it 
 
 Version Control:
 ----------------
-This project uses git for version control. Commit logs show daily progress and modifications.
+This project uses git for version control.
+
 
 Known Issues:
 -------------
 No major issues at this time.
-
-Author Notes:
--------------
-Before final submission, please run "make clean" to remove object files and executables.
